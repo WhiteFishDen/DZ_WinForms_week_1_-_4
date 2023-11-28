@@ -58,6 +58,9 @@ namespace DZ_WinForms_week_1_задание_4
                     _static.BackColor = Color.DeepSkyBlue;
                     _static.ForeColor = Color.Red;
                     Controls.Add(_static);
+                    _static.MouseClick += _static_MouseClick;
+                    _static.MouseDoubleClick += _static_MouseDoubleClick;
+
                 }
 
 
@@ -65,6 +68,50 @@ namespace DZ_WinForms_week_1_задание_4
 
         }
 
+        private void _static_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                int BufferNumber = _idStatic;
+                foreach (Label item in Controls)
+                {
+                    Point spot = item.PointToScreen(Point.Empty);
+                    if ((MousePosition.X > spot.X && MousePosition.X < spot.X + item.Width) &&
+                          (MousePosition.Y > spot.Y && MousePosition.Y < spot.Y + item.Height))
+                    {
+                        if(BufferNumber>Convert.ToInt32(item.Text))
+                        {
+                            BufferNumber = Convert.ToInt32(item.Text);
+                        }
+                    }
+
+                }
+                foreach (Label item in Controls)
+                {
+                    if (BufferNumber == Convert.ToInt32(item.Text))
+                    {
+                        Text = $"Deleted static {item.Text}";
+                        Controls.Remove(item);
+                    }
+                }
+            }
+        }
+
+        private void _static_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button== MouseButtons.Right)
+            {
+                foreach (Label item in Controls)
+                {
+                    Point spot = item.PointToScreen(Point.Empty);
+                    if((MousePosition.X>spot.X&&MousePosition.X<spot.X+item.Width)&&
+                        (MousePosition.Y>spot.Y&&MousePosition.Y<spot.Y+item.Height))
+                    {
+                        Text = $"Static {item.Text} Coordinates: {item.Location} Square = {item.Height * item.Width}";
+                    }
+                }
+            }
+        }
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
 
